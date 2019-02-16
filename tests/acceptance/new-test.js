@@ -144,13 +144,11 @@ describe('Acceptance: ember new', function() {
       '--skip-git',
     ])).to.be.fulfilled;
 
-    const linePrefix = '  [32mcreate[39m ';
-    const filePathBeginsIdx = linePrefix.length - 1;
-    const everyFileBeginsWithFolder = res.outputStream
-      .filter(log => log.includes(linePrefix))
-      .every(log => log.startsWith('foo/', filePathBeginsIdx));
+    const everyFileBeginsWithDirectory = res.outputStream
+      .filter(log => log.includes(chalk.green('create')))
+      .every(log => log.trim().startsWith(`${chalk.green('create')} foo/`));
 
-    expect(everyFileBeginsWithFolder).to.be.true;
+    expect(everyFileBeginsWithDirectory).to.be.true;
   }));
 
   it('ember new foo, blueprint targets match the default ember-cli targets', co.wrap(function *() {
@@ -425,13 +423,11 @@ describe('Acceptance: ember new', function() {
       '--directory=bar'
     ])).to.be.fulfilled;
 
-    const linePrefix = '  [32mcreate[39m ';
-    const filePathBeginsIdx = linePrefix.length - 1;
-    const everyFileBeginsWithFolder = res.outputStream
-      .filter(log => log.includes(linePrefix))
-      .every(log => log.startsWith('bar/', filePathBeginsIdx));
+    const everyFileBeginsWithDirectory = res.outputStream
+      .filter(log => log.includes(chalk.green('create')))
+      .every(log => log.trim().startsWith(`${chalk.green('create')} bar/`));
 
-    expect(everyFileBeginsWithFolder).to.be.true;
+    expect(everyFileBeginsWithDirectory).to.be.true;
   }));
 
   it('ember addon with --directory uses given directory name and has correct package name', co.wrap(function *() {
