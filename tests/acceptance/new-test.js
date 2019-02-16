@@ -134,7 +134,7 @@ describe('Acceptance: ember new', function() {
 
     confirmBlueprintedApp();
   }));
-  
+
   it('ember new logs each file prefixed with the directory where it was created', co.wrap(function *() {
     const res = yield expect(ember([
       'new',
@@ -412,7 +412,7 @@ describe('Acceptance: ember new', function() {
     let pkgJson = fs.readJsonSync('package.json');
     expect(pkgJson.name).to.equal('foo', 'uses app name for package name');
   }));
-  
+
   it('ember new with --directory logs each file prefixed with the directory where it was created', co.wrap(function *() {
     const res = yield expect(ember([
       'new',
@@ -420,7 +420,7 @@ describe('Acceptance: ember new', function() {
       '--skip-npm',
       '--skip-bower',
       '--skip-git',
-      '--directory=bar'
+      '--directory=bar',
     ])).to.be.fulfilled;
 
     const everyFileBeginsWithDirectory = res.outputStream
