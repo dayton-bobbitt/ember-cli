@@ -24,7 +24,7 @@ const getURLFor = require('ember-source-channel-url');
 
 let tmpDir = './tmp/new-test';
 
-describe.only('Acceptance: ember new', function() {
+describe('Acceptance: ember new', function() {
   this.timeout(10000);
   let ORIGINAL_PROCESS_ENV_CI;
 
