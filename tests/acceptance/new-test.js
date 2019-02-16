@@ -24,7 +24,7 @@ const getURLFor = require('ember-source-channel-url');
 
 let tmpDir = './tmp/new-test';
 
-describe('Acceptance: ember new', function() {
+describe.only('Acceptance: ember new', function() {
   this.timeout(10000);
   let ORIGINAL_PROCESS_ENV_CI;
 
@@ -133,6 +133,24 @@ describe('Acceptance: ember new', function() {
     ]);
 
     confirmBlueprintedApp();
+  }));
+  
+  it('ember new logs each file prefixed with the directory where it was created', co.wrap(function *() {
+    const res = yield expect(ember([
+      'new',
+      'foo',
+      '--skip-npm',
+      '--skip-bower',
+      '--skip-git',
+    ])).to.be.fulfilled;
+
+    const linePrefix = '  [32mcreate[39m ';
+    const filePathBeginsIdx = linePrefix.length - 1;
+    const everyFileBeginsWithFolder = res.outputStream
+      .filter(log => log.includes(linePrefix))
+      .every(log => log.startsWith('foo/', filePathBeginsIdx));
+
+    expect(everyFileBeginsWithFolder).to.be.true;
   }));
 
   it('ember new foo, blueprint targets match the default ember-cli targets', co.wrap(function *() {
@@ -395,6 +413,25 @@ describe('Acceptance: ember new', function() {
 
     let pkgJson = fs.readJsonSync('package.json');
     expect(pkgJson.name).to.equal('foo', 'uses app name for package name');
+  }));
+  
+  it('ember new with --directory logs each file prefixed with the directory where it was created', co.wrap(function *() {
+    const res = yield expect(ember([
+      'new',
+      'foo',
+      '--skip-npm',
+      '--skip-bower',
+      '--skip-git',
+      '--directory=bar'
+    ])).to.be.fulfilled;
+
+    const linePrefix = '  [32mcreate[39m ';
+    const filePathBeginsIdx = linePrefix.length - 1;
+    const everyFileBeginsWithFolder = res.outputStream
+      .filter(log => log.includes(linePrefix))
+      .every(log => log.startsWith('bar/', filePathBeginsIdx));
+
+    expect(everyFileBeginsWithFolder).to.be.true;
   }));
 
   it('ember addon with --directory uses given directory name and has correct package name', co.wrap(function *() {
